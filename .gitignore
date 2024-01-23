@@ -24,3 +24,6 @@ yarn-error.log*
 
 #info
 info.txt
+
+# database configuration
+src/server/db.js

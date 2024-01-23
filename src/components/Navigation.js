@@ -24,19 +24,19 @@ export default function Navigation() {
       </NavbarBrand>
       <NavbarContent>
         <NavbarItem>
-          <Link to="/login">Dashboard</Link>
+          <Link to="/">Dashboard</Link>
         </NavbarItem>
         <NavbarItem>
-          <Link to="/">Products</Link>
+          <Link to="/dashboard">Products</Link>
         </NavbarItem>
         <NavbarItem>
-          <Link to="/">Sites & Locations</Link>
+          <Link to="/locations">Sites & Locations</Link>
         </NavbarItem>
         <NavbarItem>
-          <Link to="/">Suppliers</Link>
+          <Link to="/dashboard">Suppliers</Link>
         </NavbarItem>
         <NavbarItem>
-          <Link to="/">Brands</Link>
+          <Link to="/dashboard">Brands</Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent as="div" className="items-center" justify="end">
