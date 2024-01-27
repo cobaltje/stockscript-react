@@ -1,45 +1,82 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
+  Button,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Avatar,
   Link as NextUiLink,
+  Input,
+  DropdownItem,
+  DropdownTrigger,
+  Dropdown,
+  DropdownMenu,
+  Avatar,
 } from "@nextui-org/react";
 
 export default function Navigation() {
+  const location = useLocation();
+  const isRouteActive = (route) => location.pathname === route;
+
   return (
-    <Navbar>
+    <Navbar className="mb-8 bg-slate-200 ">
       <NavbarBrand>
         <p>StockScript React</p>
       </NavbarBrand>
       <NavbarContent>
         <NavbarItem>
-          <Link to="/">Dashboard</Link>
+          <Button
+            as={Link}
+            to="/"
+            variant={isRouteActive("/") ? "solid" : "light"}
+            color={isRouteActive("/") ? "primary" : "default"}
+          >
+            Dashboard
+          </Button>
         </NavbarItem>
         <NavbarItem>
-          <Link to="/dashboard">Products</Link>
+          <Button
+            as={Link}
+            to="/products"
+            variant={isRouteActive("/products") ? "solid" : "light"}
+            color={isRouteActive("/products") ? "primary" : "default"}
+          >
+            Products
+          </Button>
         </NavbarItem>
         <NavbarItem>
-          <Link to="/locations">Sites & Locations</Link>
+          <Button
+            as={Link}
+            to="/locations"
+            variant={isRouteActive("/locations") ? "solid" : "light"}
+            color={isRouteActive("/locations") ? "primary" : "default"}
+          >
+            Sites & Locations
+          </Button>
         </NavbarItem>
         <NavbarItem>
-          <Link to="/dashboard">Suppliers</Link>
+          <Button
+            as={Link}
+            to="/suppliers"
+            variant={isRouteActive("/suppliers") ? "solid" : "light"}
+            color={isRouteActive("/suppliers") ? "primary" : "default"}
+          >
+            Suppliers
+          </Button>
         </NavbarItem>
         <NavbarItem>
-          <Link to="/dashboard">Brands</Link>
+          <Button
+            as={Link}
+            to="/brands"
+            variant={isRouteActive("/brands") ? "solid" : "light"}
+            color={isRouteActive("/brands") ? "primary" : "default"}
+          >
+            Brands
+          </Button>
         </NavbarItem>
       </NavbarContent>
-      <NavbarContent as="div" className="items-center" justify="end">
+      <NavbarContent as="div" className="items-center " justify="end">
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
             <Avatar

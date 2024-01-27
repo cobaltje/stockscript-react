@@ -22,8 +22,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-#info
+#info & settings
 info.txt
+tables.txt
 
 # database configuration
 src/server/db.js

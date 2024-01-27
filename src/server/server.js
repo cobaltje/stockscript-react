@@ -6,9 +6,11 @@ const PORT = 3002;
 const cors = require("cors");
 
 const locationRoutes = require("./routes/locationRoute");
+const siteRoutes = require("./routes/siteRoute");
 
 app.use(cors());
 app.use("/location", locationRoutes);
+app.use("/site", siteRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello, this is your server!");
