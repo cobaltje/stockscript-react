@@ -28,13 +28,27 @@ router.post("/", async (req, res) => {
     res.json(newSite);
   } catch (error) {
     console.error("Error creating site:", error);
-    res.status(500).send("Internal Server Error");
+
+    if (error.message && error.message.includes("unique constraint")) {
+      // Handle uniqueness constraint violation
+      res
+        .status(400)
+        .json({ success: false, message: "Site name must be unique" });
+    } else {
+      // Log the complete error object for further inspection
+      console.error("Complete error object:", error);
+
+      // Handle other errors
+      const errorMessage = error.detail
+        ? error.detail
+        : "Internal Server Error";
+      res.status(500).json({ success: false, message: errorMessage });
+    }
   }
 });
 
 router.put("/:id", async (req, res) => {
   try {
-    console.log(req);
     const siteId = req.params.id;
     const { sitename, color_code } = req.body;
 
@@ -44,7 +58,22 @@ router.put("/:id", async (req, res) => {
     res.json(updatedSite);
   } catch (error) {
     console.error("Error updating site:", error);
-    res.status(500).send("Internal Server Error");
+
+    if (error.message && error.message.includes("unique constraint")) {
+      // Handle uniqueness constraint violation
+      res
+        .status(400)
+        .json({ success: false, message: "Site name must be unique" });
+    } else {
+      // Log the complete error object for further inspection
+      console.error("Complete error object:", error);
+
+      // Handle other errors
+      const errorMessage = error.detail
+        ? error.detail
+        : "Internal Server Error";
+      res.status(500).json({ success: false, message: errorMessage });
+    }
   }
 });
 

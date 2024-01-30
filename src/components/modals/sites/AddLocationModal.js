@@ -8,29 +8,35 @@ import {
   ModalFooter,
   Button,
   Input,
+  Select,
+  SelectItem,
 } from "@nextui-org/react";
-import { FaMapLocation, FaPaintbrush } from "react-icons/fa6";
+import { FaMapLocation, FaPaintbrush, FaLocationDot } from "react-icons/fa6";
 import { TwitterPicker } from "react-color";
 import { API_BASE_URL } from "../../../Config";
 import { toast } from "react-toastify";
 
-export default function AddSiteModal({
+export default function AddLocationModal({
   isOpen,
   onOpenChange,
   title,
+  sitesData,
   fetchDataLocations,
   fetchDataSites,
 }) {
   const [isSaving, setIsSaving] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [formData, setFormData] = useState({
-    sitename: "",
+    locationname: "",
+    site_id: "",
     color_code: "",
   });
 
-  const isFormValid = formData.sitename.trim() !== "";
+  const isFormValid =
+    formData.locationname.trim() !== "" && formData.site_id !== "";
 
   const handleInputChange = (fieldName, value) => {
+    console.log(fieldName, value);
     setFormData((prevData) => ({
       ...prevData,
       [fieldName]: value,
@@ -42,7 +48,7 @@ export default function AddSiteModal({
       setIsSaving(true);
       try {
         // Create a new site
-        const response = await fetch(`${API_BASE_URL}/site`, {
+        const response = await fetch(`${API_BASE_URL}/location`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -53,23 +59,22 @@ export default function AddSiteModal({
         const result = await response.json();
 
         if (response.ok) {
-          // Successfully created the site
-
           fetchDataSites();
           fetchDataLocations();
-          toast.success(`${formData.sitename} succesfully created!`, {});
+          toast.success(`${formData.locationname} succesfully created!`, {});
         } else {
           // Handle error cases
           throw Error(result.message);
         }
       } catch (error) {
-        console.error("Error creating a new site:", error);
+        console.error("Error creating a new location:", error);
         toast.error(`${error}`, {});
       }
 
       onOpenChange(false);
       setFormData({
-        sitename: "",
+        locationname: "",
+        site_id: "",
         color_code: "",
       });
       setIsSaving(false);
@@ -86,11 +91,27 @@ export default function AddSiteModal({
               <Input
                 isRequired
                 type="text"
-                label="Site name"
+                label="Location name"
                 className="max-w-xs"
-                startContent={<FaMapLocation />}
-                onChange={(e) => handleInputChange("sitename", e.target.value)}
+                startContent={<FaLocationDot />}
+                onChange={(e) =>
+                  handleInputChange("locationname", e.target.value)
+                }
               />
+
+              <Select
+                isRequired
+                label="Choose a site"
+                startContent={<FaMapLocation />}
+                className="max-w-xs"
+                onChange={(e) => handleInputChange("site_id", e.target.value)}
+              >
+                {sitesData.map((site) => (
+                  <SelectItem key={site.id} value={site.sitename}>
+                    {site.sitename}
+                  </SelectItem>
+                ))}
+              </Select>
 
               <Button
                 onPress={() => setShowColorPicker(!showColorPicker)}
@@ -126,7 +147,7 @@ export default function AddSiteModal({
                 color="primary"
                 onPress={handleSave}
               >
-                Add site
+                Add location
               </Button>
             </ModalFooter>
           </>

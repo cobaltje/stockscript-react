@@ -17,12 +17,10 @@ import { toast } from "react-toastify";
 export default function SiteModal({
   isOpen,
   onOpenChange,
-  title,
-  content,
-  footer,
   siteData,
   fetchDataLocations,
   fetchDataSites,
+  viewOnly,
 }) {
   const defaultBackgroundColor = "#fff";
   const [showColorPicker, setShowColorPicker] = useState(false);
@@ -64,19 +62,20 @@ export default function SiteModal({
       });
 
       if (response.ok) {
-        console.log("Data updated successfully");
+        // Successful update
         fetchDataSites();
         fetchDataLocations();
-        toast.success(`${formData.sitename} succesfully saved!`, {});
+        toast.success(`${formData.sitename} successfully saved!`, {});
       } else {
-        console.error("Failed to update data");
+        const result = await response.json();
+        throw Error(result.message);
       }
-
-      setIsSaving(false);
-      // Close modal
-      onOpenChange(false);
     } catch (error) {
       console.error("Error updating data:", error);
+      toast.error(`${error}`, {});
+    } finally {
+      setIsSaving(false);
+      onOpenChange(false);
     }
   };
 
@@ -103,6 +102,7 @@ export default function SiteModal({
               />
               <Input
                 isRequired
+                isDisabled={!viewOnly}
                 type="text"
                 label="Site name"
                 defaultValue={siteData.sitename}
@@ -117,19 +117,22 @@ export default function SiteModal({
                 variant="flat"
                 className="max-w-xs"
               >
-                <FaPaintbrush /> Choose site color
+                <FaPaintbrush />
+                {!viewOnly ? "See site color" : "Choose site color"}
               </Button>
 
               {showColorPicker && (
                 <TwitterPicker
                   className="max-w-xs"
                   color={formData.color_code}
-                  onChange={(color) =>
-                    setFormData((prevData) => ({
-                      ...prevData,
-                      color_code: color.hex,
-                    }))
-                  }
+                  onChange={(color) => {
+                    if (viewOnly) {
+                      setFormData((prevData) => ({
+                        ...prevData,
+                        color_code: color.hex,
+                      }));
+                    }
+                  }}
                   // onChangeComplete={(color) => setColor(color)}
                 />
               )}
@@ -138,9 +141,17 @@ export default function SiteModal({
               <Button color="danger" variant="light" onPress={onClose}>
                 Close
               </Button>
-              <Button isLoading={isSaving} color="primary" onPress={handleSave}>
-                {!isSaving ? "Save" : "Saving"}
-              </Button>
+              {viewOnly ? (
+                <Button
+                  isLoading={isSaving}
+                  color="primary"
+                  onPress={handleSave}
+                >
+                  {!isSaving ? "Save" : "Saving"}
+                </Button>
+              ) : (
+                ""
+              )}
             </ModalFooter>
           </>
         )}
