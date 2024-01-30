@@ -9,6 +9,7 @@ const locationRoutes = require("./routes/locationRoute");
 const siteRoutes = require("./routes/siteRoute");
 
 app.use(cors());
+app.use(express.json());
 app.use("/location", locationRoutes);
 app.use("/site", siteRoutes);
 

@@ -10,10 +10,10 @@ import {
   Button,
 } from "@nextui-org/react";
 import { FaRegTrashCan, FaPencil, FaEye } from "react-icons/fa6";
+import ColorDecider from "../ColorDecider";
 
-export default function LocationTable({ locations, onEditClick }) {
+export default function LocationTable({ locations, sites, onEditClick }) {
   const handleOnClick = (location, view) => {
-    console.log(view);
     onEditClick(location, view);
   };
 
@@ -23,7 +23,7 @@ export default function LocationTable({ locations, onEditClick }) {
         <TableColumn>ID</TableColumn>
         <TableColumn>LOCATION</TableColumn>
         <TableColumn>SITE</TableColumn>
-        <TableColumn>ACTIONS</TableColumn>
+        <TableColumn className="text-right">ACTIONS</TableColumn>
       </TableHeader>
       <TableBody>
         {locations.map((location) => (
@@ -36,14 +36,16 @@ export default function LocationTable({ locations, onEditClick }) {
             <TableCell>{location.locationname}</TableCell>
             <TableCell>
               <Chip
-                color="primary"
                 variant="flat"
-                style={{ backgroundColor: "darkblue", color: "#fff" }}
+                style={{
+                  backgroundColor: `${location.color_code}`,
+                  color: ColorDecider(location.color_code),
+                }}
               >
                 {location.sitename}
               </Chip>
             </TableCell>
-            <TableCell>
+            <TableCell className="text-right">
               <Button
                 isIconOnly
                 size="sm"

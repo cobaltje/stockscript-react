@@ -11,9 +11,8 @@ import {
 } from "@nextui-org/react";
 import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
 
-export default function SiteTable({ sites, onEditClick }) {
+export default function SiteTable({ sites, onEditClick, onDeleteClick }) {
   const handleOnClick = (site) => {
-    console.log(site);
     onEditClick(site);
   };
 
@@ -44,7 +43,13 @@ export default function SiteTable({ sites, onEditClick }) {
               >
                 <FaPencil />
               </Button>
-              <Button isIconOnly size="sm" color="danger" variant="flat">
+              <Button
+                onClick={() => onDeleteClick(site.id, site.sitename)}
+                isIconOnly
+                size="sm"
+                color="danger"
+                variant="flat"
+              >
                 <FaRegTrashCan />
               </Button>
             </TableCell>

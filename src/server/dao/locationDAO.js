@@ -2,7 +2,7 @@ const db = require("../db");
 
 const getLocations = async (filters) => {
   let query = `
-  SELECT location.*, site.id as site_id, site.sitename FROM location 
+  SELECT location.*, site.id as site_id, site.sitename, site.color_code FROM location 
   LEFT JOIN site ON site.id = location.site_id
   WHERE 1 = 1 `;
 
