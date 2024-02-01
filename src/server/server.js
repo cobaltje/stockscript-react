@@ -7,11 +7,13 @@ const cors = require("cors");
 
 const locationRoutes = require("./routes/locationRoute");
 const siteRoutes = require("./routes/siteRoute");
+const supplierRoutes = require("./routes/supplierRoute");
 
 app.use(cors());
 app.use(express.json());
 app.use("/location", locationRoutes);
 app.use("/site", siteRoutes);
+app.use("/supplier", supplierRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello, this is your server!");

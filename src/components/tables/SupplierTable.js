@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Table,
   TableHeader,
@@ -12,43 +11,66 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Link,
+  useDisclosure,
 } from "@nextui-org/react";
 import {
   FaRegTrashCan,
   FaPencil,
   FaEye,
   FaEllipsisVertical,
-  FaCircle,
 } from "react-icons/fa6";
+import { useState, useEffect } from "react";
 
-export default function SiteTable({ sites, onEditClick, onDeleteClick }) {
-  const handleOnClick = (site, view) => {
-    onEditClick(site, view);
-  };
-
+export default function SupplierTable({ suppliers, onDeleteClick }) {
   return (
-    <Table isStriped aria-label="location table">
+    <Table isStriped aria-label="suppliers table">
       <TableHeader>
         <TableColumn>ID</TableColumn>
-        <TableColumn>SITE</TableColumn>
+        <TableColumn>SUPPLIERNAME</TableColumn>
+        <TableColumn>CONTACT</TableColumn>
+        <TableColumn>CONTACT EMAIL</TableColumn>
+        <TableColumn>WEBSITE</TableColumn>
         <TableColumn>ACTIONS</TableColumn>
       </TableHeader>
-      <TableBody emptyContent={"No sites found."}>
-        {sites.map((site) => (
-          <TableRow key={site.id}>
+      <TableBody emptyContent={"No suppliers found."}>
+        {suppliers.map((supplier) => (
+          <TableRow key={supplier.id}>
             <TableCell>
               <Chip color="default" variant="flat">
-                {site.id}
+                {supplier.id}
               </Chip>
             </TableCell>
+            <TableCell>{supplier.suppliername}</TableCell>
+            <TableCell>{supplier.contact}</TableCell>
             <TableCell>
-              <div className="flex items-center gap-3">
-                <FaCircle style={{ color: site.color_code }} />
-                <span> {site.sitename}</span>
-              </div>
+              {supplier.contact_email && (
+                <Link
+                  size="sm"
+                  isExternal
+                  isBlock
+                  showAnchorIcon
+                  href={"mailto:" + supplier.contact_email}
+                >
+                  {supplier.contact_email}
+                </Link>
+              )}
+            </TableCell>
+            <TableCell>
+              {supplier.website && (
+                <Link
+                  size="sm"
+                  isExternal
+                  isBlock
+                  showAnchorIcon
+                  href={supplier.website}
+                >
+                  {supplier.website}
+                </Link>
+              )}
             </TableCell>
             <TableCell className="text-right">
-              <Dropdown showArrow placement="bottom-end">
+              <Dropdown>
                 <DropdownTrigger>
                   <Button size="sm" isIconOnly variant="flat">
                     <FaEllipsisVertical />
@@ -58,27 +80,27 @@ export default function SiteTable({ sites, onEditClick, onDeleteClick }) {
                   <DropdownItem
                     description={`View the details of this site.`}
                     startContent={<FaEye />}
-                    onClick={() => handleOnClick(site, "view")}
                     color="default"
                   >
-                    View {site.sitename}
+                    View
                   </DropdownItem>
                   <DropdownItem
                     description={`Edit the details of this site.`}
                     startContent={<FaPencil />}
-                    onClick={() => handleOnClick(site)}
                     color="primary"
                   >
-                    Edit {site.sitename}
+                    Edit
                   </DropdownItem>
                   <DropdownItem
                     description={`Delete this site.`}
                     startContent={<FaRegTrashCan />}
-                    onClick={() => onDeleteClick(site.id, site.sitename)}
                     color="danger"
                     className="text-danger"
+                    onClick={() =>
+                      onDeleteClick(supplier.id, supplier.suppliername)
+                    }
                   >
-                    Delete {site.sitename}
+                    Delete
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>

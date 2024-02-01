@@ -56,7 +56,8 @@ export default function LocationTable({
             </TableCell>
             <TableCell>
               <Chip
-                variant="flat"
+                size="sm"
+                variant="solid"
                 style={{
                   backgroundColor: `${location.site_color_code}`,
                   color: ColorDecider(location.site_color_code),

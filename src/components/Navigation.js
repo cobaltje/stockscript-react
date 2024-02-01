@@ -13,7 +13,9 @@ import {
   Dropdown,
   DropdownMenu,
   Avatar,
+  Badge,
 } from "@nextui-org/react";
+import { FaBell } from "react-icons/fa6";
 
 export default function Navigation() {
   const location = useLocation();
@@ -77,6 +79,9 @@ export default function Navigation() {
         </NavbarItem>
       </NavbarContent>
       <NavbarContent as="div" className="items-center " justify="end">
+        <Badge color="danger" content={5} shape="circle">
+          <FaBell className="fill-current" size={20} />
+        </Badge>
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
             <Avatar

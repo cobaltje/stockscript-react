@@ -6,9 +6,9 @@ import { Button, Divider, useDisclosure, Chip } from "@nextui-org/react";
 import { FaMapLocation, FaLocationDot } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import SiteModal from "../components/modals/sites/SiteModal";
-import LocationModal from "../components/modals/sites/LocationModal";
+import LocationModal from "../components/modals/locations/LocationModal";
 import AddSiteModal from "../components/modals/sites/AddSiteModal";
-import AddLocationModal from "../components/modals/sites/AddLocationModal";
+import AddLocationModal from "../components/modals/locations/AddLocationModal";
 import Swal from "sweetalert2";
 
 export default function SitesAndLocations() {
