@@ -12,7 +12,6 @@ import {
   DropdownMenu,
   DropdownItem,
   Link,
-  useDisclosure,
 } from "@nextui-org/react";
 import {
   FaRegTrashCan,
@@ -20,7 +19,6 @@ import {
   FaEye,
   FaEllipsisVertical,
 } from "react-icons/fa6";
-import { useState, useEffect } from "react";
 
 export default function SupplierTable({ suppliers, onDeleteClick }) {
   return (
@@ -76,7 +74,10 @@ export default function SupplierTable({ suppliers, onDeleteClick }) {
                     <FaEllipsisVertical />
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu variant="flat">
+                <DropdownMenu
+                  aria-label="Dropdown menu for suppliers"
+                  variant="flat"
+                >
                   <DropdownItem
                     description={`View the details of this site.`}
                     startContent={<FaEye />}

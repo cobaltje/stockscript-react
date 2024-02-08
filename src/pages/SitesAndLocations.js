@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import LocationTable from "../components/tables/LocationTable";
-import { API_BASE_URL } from "../Config";
 import SiteTable from "../components/tables/SiteTable";
 import { Button, Divider, useDisclosure, Chip } from "@nextui-org/react";
 import { FaMapLocation, FaLocationDot } from "react-icons/fa6";
@@ -9,7 +8,9 @@ import SiteModal from "../components/modals/sites/SiteModal";
 import LocationModal from "../components/modals/locations/LocationModal";
 import AddSiteModal from "../components/modals/sites/AddSiteModal";
 import AddLocationModal from "../components/modals/locations/AddLocationModal";
-import Swal from "sweetalert2";
+import { deleteSite, getSites } from "../functions/api/siteApi";
+import { deleteLocation, getLocations } from "../functions/api/locationApi";
+import { showDeleteConfirmation } from "../functions/swalConfig";
 
 export default function SitesAndLocations() {
   const [locations, setLocations] = useState([]);
@@ -22,23 +23,21 @@ export default function SitesAndLocations() {
 
   const fetchDataLocations = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/location`);
-      const result = await response.json();
-
+      const result = await getLocations();
       setLocations(result);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error(error);
+      toast.error("Unable to get the locations from the database!");
     }
   };
 
   const fetchDataSites = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/site`);
-      const result = await response.json();
-
+      const result = await getSites();
       setSites(result);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error(error);
+      toast.error("Unable to get the sites from the database!");
     }
   };
 
@@ -48,100 +47,64 @@ export default function SitesAndLocations() {
   }, []);
 
   const handleDeleteSite = async (siteId, siteName) => {
-    Swal.fire({
-      title: `Delete ${siteName} ?`,
-      text: "There is no way back after this!",
-      icon: "warning",
-      showCancelButton: true,
-      cancelButtonColor: "#d33",
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!",
-      reverseButtons: true,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await fetch(`${API_BASE_URL}/site/${siteId}`, {
-            method: "DELETE",
-          });
-
-          if (response.ok) {
-            // Successfully deleted the site
-            console.log("Site deleted successfully");
-            fetchDataSites(); // Refresh the site data
-            fetchDataLocations();
-            toast.success(`${siteName} succesfully deleted!`, {});
-          } else {
-            // Handle error cases
-            console.error("Failed to delete the site");
-            toast.error(`Unable to delete ${siteName}!`);
-          }
-        } catch (error) {
-          console.error("Error deleting the site:", error);
+    const result = await showDeleteConfirmation(siteName);
+    if (result.isConfirmed) {
+      try {
+        const result = await deleteSite(siteId);
+        if (result) {
+          // Successfully deleted the site
+          fetchDataSites();
+          fetchDataLocations();
+          toast.success(`${siteName} succesfully deleted!`);
         }
+      } catch (error) {
+        toast.error(`Unable to delete ${siteName}!`);
       }
-    });
+    }
   };
 
   const handleDeleteLocation = async (locationId, locationName) => {
-    Swal.fire({
-      title: `Delete ${locationName} ?`,
-      text: "There is no way back after this!",
-      icon: "warning",
-      showCancelButton: true,
-      cancelButtonColor: "#d33",
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!",
-      reverseButtons: true,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await fetch(
-            `${API_BASE_URL}/location/${locationId}`,
-            {
-              method: "DELETE",
-            }
-          );
-
-          if (response.ok) {
-            // Successfully deleted the site
-            console.log("Location deleted successfully");
-            fetchDataSites(); // Refresh the site data
-            fetchDataLocations();
-            toast.success(`${locationName} succesfully deleted!`, {});
-          } else {
-            // Handle error cases
-            console.error("Failed to delete the location");
-            toast.error(`Unable to delete ${locationName}!`);
-          }
-        } catch (error) {
-          console.error("Error deleting the location:", error);
+    const result = await showDeleteConfirmation(locationName);
+    if (result.isConfirmed) {
+      try {
+        const result = await deleteLocation(locationId);
+        if (result) {
+          // Successfully deleted the site
+          fetchDataSites();
+          fetchDataLocations();
+          toast.success(`${locationName} succesfully deleted!`);
         }
+      } catch (error) {
+        toast.error(`Unable to delete ${locationName}!`);
       }
-    });
+    }
+  };
+
+  const openModal = (type, data, view) => {
+    setModalType(type);
+    if (type === "editSite" && data) {
+      setSiteData(data);
+    } else if (type === "editLocation" && data) {
+      setLocationData(data);
+    }
+    setViewOnly(view === "view" ? false : true);
+    onOpen();
   };
 
   const openAddSiteModal = () => {
-    setModalType("addSite");
-    onOpen();
+    openModal("addSite");
   };
 
   const openEditSiteModal = (site, view) => {
-    setModalType("editSite");
-    setSiteData(site);
-    setViewOnly(view === "view" ? false : true);
-    onOpen();
+    openModal("editSite", site, view);
   };
 
   const openAddLocationModal = () => {
-    setModalType("addLocation");
-    onOpen();
+    openModal("addLocation");
   };
 
   const openEditLocationModal = (location, view) => {
-    setModalType("editLocation");
-    setLocationData(location);
-    setViewOnly(view === "view" ? false : true);
-    onOpen();
+    openModal("editLocation", location, view);
   };
 
   return (

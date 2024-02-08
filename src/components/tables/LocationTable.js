@@ -20,7 +20,7 @@ import {
   FaCircle,
   FaEllipsisVertical,
 } from "react-icons/fa6";
-import ColorDecider from "../ColorDecider";
+import ColorDecider from "../../functions/ColorDecider";
 
 export default function LocationTable({
   locations,
@@ -103,29 +103,6 @@ export default function LocationTable({
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-              {/* <Button
-                isIconOnly
-                size="sm"
-                color="default"
-                variant="flat"
-                className="mr-2"
-                onClick={() => handleOnClick(location, "view")}
-              >
-                <FaEye />
-              </Button>
-              <Button
-                isIconOnly
-                size="sm"
-                color="primary"
-                variant="flat"
-                className="mr-2"
-                onClick={() => handleOnClick(location)}
-              >
-                <FaPencil />
-              </Button>
-              <Button isIconOnly size="sm" color="danger" variant="flat">
-                <FaRegTrashCan />
-              </Button> */}
             </TableCell>
           </TableRow>
         ))}

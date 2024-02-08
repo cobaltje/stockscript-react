@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../Config";
-import Swal from "sweetalert2";
+import { deleteSupplier } from "../functions/api/supplierApi";
 import { toast } from "react-toastify";
 import SupplierCard from "../components/cards/SupplierCard";
 import SupplierTable from "../components/tables/SupplierTable";
@@ -20,6 +20,7 @@ import {
   FaList,
   FaMagnifyingGlass,
 } from "react-icons/fa6";
+import { showDeleteConfirmation } from "../functions/swalConfig";
 
 export default function Suppliers() {
   const [suppliers, setSuppliers] = useState([]);
@@ -30,11 +31,13 @@ export default function Suppliers() {
   const [modalType, setModalType] = useState(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  // Open the modal to add a Supplier
   const openAddSupplierModal = () => {
     setModalType("addSupplier");
     onOpen();
   };
 
+  // Open the modal to edit an excisting Supplier
   const openEditSupplierModal = (supplier, view) => {
     setModalType("editSupplier");
     setSupplierData(supplier);
@@ -47,6 +50,7 @@ export default function Suppliers() {
     setViewType(type);
   };
 
+  // Fetch all the Suppliers with an API call to the server
   const fetchDataSuppliers = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/supplier`);
@@ -58,6 +62,7 @@ export default function Suppliers() {
     }
   };
 
+  // Filter the (card) list based on the input filter
   const filterSuppliers = (suppliers, searchInput) => {
     return suppliers.filter(
       (supplier) =>
@@ -70,42 +75,19 @@ export default function Suppliers() {
     fetchDataSuppliers();
   }, []);
 
+  // Delete a Supplier
   const handleDeleteSupplier = async (supplierId, supplierName) => {
-    Swal.fire({
-      title: `Delete ${supplierName} ?`,
-      text: "There is no way back after this!",
-      icon: "warning",
-      showCancelButton: true,
-      cancelButtonColor: "#d33",
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!",
-      reverseButtons: true,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await fetch(
-            `${API_BASE_URL}/supplier/${supplierId}`,
-            {
-              method: "DELETE",
-            }
-          );
+    const result = await showDeleteConfirmation(supplierName);
 
-          if (response.ok) {
-            // Successfully deleted the site
-            console.log("Supplier deleted successfully");
-            fetchDataSuppliers(); // Refresh the site data
-
-            toast.success(`${supplierName} succesfully deleted!`, {});
-          } else {
-            // Handle error cases
-            console.error("Failed to delete the site");
-            toast.error(`Unable to delete ${supplierName}!`);
-          }
-        } catch (error) {
-          console.error("Error deleting the site:", error);
-        }
+    if (result.isConfirmed) {
+      const deletedSuccessfully = await deleteSupplier(supplierId);
+      if (deletedSuccessfully) {
+        fetchDataSuppliers();
+        toast.success(`${supplierName} successfully deleted!`, {});
+      } else {
+        toast.error(`Unable to delete ${supplierName}!`);
       }
-    });
+    }
   };
 
   return (

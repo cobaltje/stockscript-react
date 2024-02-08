@@ -48,23 +48,26 @@ export default function SupplierCard({ supplier, onDeleteClick }) {
               <FaEllipsisVertical />
             </Button>
           </DropdownTrigger>
-          <DropdownMenu variant="flat">
+          <DropdownMenu aria-label="Dropdown menu for suppliers" variant="flat">
             <DropdownItem
-              description={`View the details of this supplier.`}
+              textValue={`View ${supplier.suppliername}`}
+              description="View the details of this supplier."
               startContent={<FaEye />}
               color="default"
             >
               View {supplier.suppliername}
             </DropdownItem>
             <DropdownItem
-              description={`Edit the details of this supplier.`}
+              textValue={`Edit ${supplier.suppliername}`}
+              description="Edit the details of this supplier."
               startContent={<FaPencil />}
               color="primary"
             >
               Edit {supplier.suppliername}
             </DropdownItem>
             <DropdownItem
-              description={`Delete this supplier.`}
+              textValue={`Delete ${supplier.suppliername}`}
+              description="Delete this supplier."
               startContent={<FaRegTrashCan />}
               color="danger"
               className="text-danger"
