@@ -17,19 +17,13 @@ import {
   FaLocationDot,
   FaPaintbrush,
 } from "react-icons/fa6";
-import { API_BASE_URL } from "../../../Config";
-import {
-  HuePicker,
-  SketchPicker,
-  SliderPicker,
-  TwitterPicker,
-} from "react-color";
+import { TwitterPicker } from "react-color";
 import { toast } from "react-toastify";
+import { updateLocation } from "../../../functions/api/locationApi";
 
 export default function SiteModal({
   isOpen,
   onOpenChange,
-
   locationData,
   sitesData,
   fetchDataLocations,
@@ -66,29 +60,17 @@ export default function SiteModal({
     try {
       // Save Logic
       setIsSaving(true);
-      console.log("Saving data:", formData);
 
-      // Make an HTTP request to update the data
-      const response = await fetch(`${API_BASE_URL}/location/${formData.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
+      const result = await updateLocation(formData);
+      if (result) {
         // Successful update
         fetchDataSites();
         fetchDataLocations();
-        toast.success(`${formData.locationname} successfully saved!`, {});
-      } else {
-        const result = await response.json();
-        throw Error(result.message);
+        toast.success(`${formData.locationname} successfully saved!`);
       }
     } catch (error) {
       console.error("Error updating data:", error);
-      toast.error(`${error}`, {});
+      toast.error(`${error}`);
     } finally {
       setIsSaving(false);
       onOpenChange(false);

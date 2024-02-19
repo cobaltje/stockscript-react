@@ -6,8 +6,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link as NextUiLink,
-  Input,
   DropdownItem,
   DropdownTrigger,
   Dropdown,

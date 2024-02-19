@@ -9,10 +9,10 @@ import {
   Button,
   Input,
 } from "@nextui-org/react";
-import { FaMapLocation, FaPaintbrush } from "react-icons/fa6";
+import { FaMapLocation, FaPaintbrush, FaCirclePlus } from "react-icons/fa6";
 import { TwitterPicker } from "react-color";
-import { API_BASE_URL } from "../../../Config";
 import { toast } from "react-toastify";
+import { createSite } from "../../../functions/api/siteApi";
 
 export default function AddSiteModal({
   isOpen,
@@ -42,25 +42,12 @@ export default function AddSiteModal({
       setIsSaving(true);
       try {
         // Create a new site
-        const response = await fetch(`${API_BASE_URL}/site`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
+        const response = await createSite(formData);
+        if (response) {
           // Successfully created the site
-
           fetchDataSites();
           fetchDataLocations();
           toast.success(`${formData.sitename} succesfully created!`, {});
-        } else {
-          // Handle error cases
-          throw Error(result.message);
         }
       } catch (error) {
         console.error("Error creating a new site:", error);
@@ -81,7 +68,10 @@ export default function AddSiteModal({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
+            <ModalHeader className="flex flex-row items-center gap-3">
+              <FaCirclePlus />
+              <span>{title}</span>
+            </ModalHeader>
             <ModalBody>
               <Input
                 isRequired

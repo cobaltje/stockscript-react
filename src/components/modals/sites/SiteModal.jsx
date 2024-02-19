@@ -11,8 +11,8 @@ import {
 } from "@nextui-org/react";
 import { FaMapLocation, FaKey, FaPaintbrush } from "react-icons/fa6";
 import { TwitterPicker } from "react-color";
-import { API_BASE_URL } from "../../../Config";
 import { toast } from "react-toastify";
+import { updateSite } from "../../../functions/api/siteApi";
 
 export default function SiteModal({
   isOpen,
@@ -50,25 +50,13 @@ export default function SiteModal({
     try {
       // Save Logic
       setIsSaving(true);
-      console.log("Saving data:", formData);
+      const response = await updateSite(formData);
 
-      // Make an HTTP request to update the data
-      const response = await fetch(`${API_BASE_URL}/site/${formData.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
+      if (response) {
         // Successful update
         fetchDataSites();
         fetchDataLocations();
         toast.success(`${formData.sitename} successfully saved!`, {});
-      } else {
-        const result = await response.json();
-        throw Error(result.message);
       }
     } catch (error) {
       console.error("Error updating data:", error);

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   Modal,
   ModalContent,
@@ -8,17 +9,14 @@ import {
   Button,
   Input,
   Image,
-  Divider,
 } from "@nextui-org/react";
 import {
   FaTruck,
-  FaAddressCard,
-  FaList,
-  FaMagnifyingGlass,
   FaUser,
   FaEnvelope,
   FaGlobe,
   FaImage,
+  FaCirclePlus,
 } from "react-icons/fa6";
 import { API_BASE_URL } from "../../../Config";
 import { toast } from "react-toastify";
@@ -30,6 +28,11 @@ export default function AddSupplierModal({
   title,
   fetchDataSuppliers,
 }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState({
     suppliername: "",
@@ -97,13 +100,17 @@ export default function AddSupplierModal({
     <Modal size="xl" isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
-          <>
-            <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
+          <form onSubmit={handleSubmit(handleSave)}>
+            <ModalHeader className="flex flex-row items-center gap-3">
+              <FaCirclePlus />
+              <span>{title}</span>
+            </ModalHeader>
             <ModalBody>
               <div className="grid grid-cols-2 gap-5">
                 <div className="flex flex-col gap-3">
                   <Input
-                    isRequired
+                    {...register("supplierName", { required: true })}
+                    aria-invalid={errors.firstname ? true : false}
                     type="text"
                     label="Supplier name"
                     labelPlacement="inside"
@@ -113,7 +120,10 @@ export default function AddSupplierModal({
                       handleInputChange("suppliername", e.target.value)
                     }
                   />
+                  {errors.supplierName?.type === "required" && <p>Error</p>}
+
                   <Input
+                    {...register("contact", { required: false })}
                     type="text"
                     label="Contact name"
                     className="max-w-xs"
@@ -123,6 +133,7 @@ export default function AddSupplierModal({
                     }
                   />
                   <Input
+                    {...register("contactemail", { required: false })}
                     type="email"
                     label="Contact email"
                     className="max-w-xs"
@@ -132,6 +143,7 @@ export default function AddSupplierModal({
                     }
                   />
                   <Input
+                    {...register("website", { required: false })}
                     type="text"
                     label="Website"
                     className="max-w-xs"
@@ -152,6 +164,7 @@ export default function AddSupplierModal({
                     isZoomed
                   />
                   <Input
+                    {...register("supplierimage", { required: false })}
                     type="text"
                     label="Supplier image url"
                     className="max-w-xs"
@@ -167,16 +180,17 @@ export default function AddSupplierModal({
               <Button color="danger" variant="light" onPress={onClose}>
                 Cancel
               </Button>
+
               <Button
-                isDisabled={!isFormValid}
+                type="submit"
+                //isDisabled={!isFormValid}
                 isLoading={isSaving}
                 color="primary"
-                onPress={handleSave}
               >
                 Add supplier
               </Button>
             </ModalFooter>
-          </>
+          </form>
         )}
       </ModalContent>
     </Modal>

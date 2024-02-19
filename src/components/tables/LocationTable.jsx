@@ -29,7 +29,7 @@ export default function LocationTable({
   onDeleteClick,
 }) {
   const handleOnClick = (location, view) => {
-    onEditClick(location, view);
+    onEditClick("editLocation", location, view);
   };
 
   return (
@@ -73,12 +73,16 @@ export default function LocationTable({
                     <FaEllipsisVertical />
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu variant="flat">
+                <DropdownMenu
+                  aria-label="Dropdown menu for locations"
+                  variant="flat"
+                >
                   <DropdownItem
                     description={`View the details of this location.`}
                     startContent={<FaEye />}
                     onClick={() => handleOnClick(location, "view")}
                     color="default"
+                    textValue={`View ${location.locationname}`}
                   >
                     View {location.locationname}
                   </DropdownItem>
@@ -87,6 +91,7 @@ export default function LocationTable({
                     startContent={<FaPencil />}
                     onClick={() => handleOnClick(location)}
                     color="primary"
+                    textValue={`Edit ${location.locationname}`}
                   >
                     Edit {location.locationname}
                   </DropdownItem>
@@ -98,6 +103,7 @@ export default function LocationTable({
                     }
                     color="danger"
                     className="text-danger"
+                    textValue={`Delete ${location.locationname}`}
                   >
                     Delete {location.locationname}
                   </DropdownItem>

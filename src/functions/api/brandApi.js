@@ -1,9 +1,9 @@
 import { API_BASE_URL } from "../../Config";
 
-// Get all the sites
-export const getSites = async () => {
+// Get all the brands
+export const getBrands = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/site`);
+    const response = await fetch(`${API_BASE_URL}/brand`);
     const result = await response.json();
 
     return result;
@@ -12,28 +12,25 @@ export const getSites = async () => {
   }
 };
 
-// Delete a site
-export const deleteSite = async (siteId) => {
+// Delete a brand
+export const deleteBrand = async (brandId) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/site/${siteId}`, {
+    const response = await fetch(`${API_BASE_URL}/brand/${brandId}`, {
       method: "DELETE",
     });
 
     if (response.ok) {
       return true;
-    } else {
-      throw new Error("Failed to delete the site");
     }
   } catch (error) {
-    console.error("Error deleting the site:", error);
-    throw Error;
+    throw new Error("Failed to delete the brand");
   }
 };
 
-// Create a site
-export const createSite = async (formData) => {
+// Create a brand
+export const createBrand = async (formData) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/site`, {
+    const response = await fetch(`${API_BASE_URL}/brand`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,11 +50,10 @@ export const createSite = async (formData) => {
   }
 };
 
-// Update a site
-export const updateSite = async (formData) => {
+// Update a location
+export const updateBrand = async (formData) => {
   try {
-    // Make an HTTP request to update the data
-    const response = await fetch(`${API_BASE_URL}/site/${formData.id}`, {
+    const response = await fetch(`${API_BASE_URL}/brand/${formData.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -73,6 +69,6 @@ export const updateSite = async (formData) => {
       throw new Error(result.message);
     }
   } catch (error) {
-    throw new Error(`Error updating site: ${error.message}`);
+    throw new Error(`Error updating brand: ${error.message}`);
   }
 };

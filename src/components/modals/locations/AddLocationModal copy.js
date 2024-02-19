@@ -11,10 +11,15 @@ import {
   Select,
   SelectItem,
 } from "@nextui-org/react";
-import { FaMapLocation, FaPaintbrush, FaLocationDot } from "react-icons/fa6";
+import {
+  FaMapLocation,
+  FaPaintbrush,
+  FaLocationDot,
+  FaCirclePlus,
+} from "react-icons/fa6";
 import { TwitterPicker } from "react-color";
-import { API_BASE_URL } from "../../../Config";
 import { toast } from "react-toastify";
+import { createLocation } from "../../../functions/api/locationApi";
 
 export default function AddLocationModal({
   isOpen,
@@ -47,28 +52,15 @@ export default function AddLocationModal({
     if (isFormValid) {
       setIsSaving(true);
       try {
-        // Create a new site
-        const response = await fetch(`${API_BASE_URL}/location`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
+        const response = await createLocation(formData);
+        if (response) {
           fetchDataSites();
           fetchDataLocations();
-          toast.success(`${formData.locationname} succesfully created!`, {});
-        } else {
-          // Handle error cases
-          throw Error(result.message);
+          toast.success(`${formData.locationname} succesfully created!`);
         }
       } catch (error) {
         console.error("Error creating a new location:", error);
-        toast.error(`${error}`, {});
+        toast.error(`Error creating a new location`);
       }
 
       onOpenChange(false);
@@ -86,7 +78,10 @@ export default function AddLocationModal({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
+            <ModalHeader className="flex flex-row items-center gap-3">
+              <FaCirclePlus />
+              <span>{title}</span>
+            </ModalHeader>
             <ModalBody>
               <Input
                 isRequired

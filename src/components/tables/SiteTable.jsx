@@ -23,7 +23,7 @@ import {
 
 export default function SiteTable({ sites, onEditClick, onDeleteClick }) {
   const handleOnClick = (site, view) => {
-    onEditClick(site, view);
+    onEditClick("editSite", site, view);
   };
 
   return (
@@ -54,12 +54,16 @@ export default function SiteTable({ sites, onEditClick, onDeleteClick }) {
                     <FaEllipsisVertical />
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu variant="flat">
+                <DropdownMenu
+                  aria-label="Dropdown menu for sites"
+                  variant="flat"
+                >
                   <DropdownItem
                     description={`View the details of this site.`}
                     startContent={<FaEye />}
                     onClick={() => handleOnClick(site, "view")}
                     color="default"
+                    textValue={`View ${site.sitename}`}
                   >
                     View {site.sitename}
                   </DropdownItem>
@@ -68,6 +72,7 @@ export default function SiteTable({ sites, onEditClick, onDeleteClick }) {
                     startContent={<FaPencil />}
                     onClick={() => handleOnClick(site)}
                     color="primary"
+                    textValue={`Edit ${site.sitename}`}
                   >
                     Edit {site.sitename}
                   </DropdownItem>
@@ -77,6 +82,7 @@ export default function SiteTable({ sites, onEditClick, onDeleteClick }) {
                     onClick={() => onDeleteClick(site.id, site.sitename)}
                     color="danger"
                     className="text-danger"
+                    textValue={`Delete ${site.sitename}`}
                   >
                     Delete {site.sitename}
                   </DropdownItem>

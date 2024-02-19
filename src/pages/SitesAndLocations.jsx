@@ -91,26 +91,10 @@ export default function SitesAndLocations() {
     onOpen();
   };
 
-  const openAddSiteModal = () => {
-    openModal("addSite");
-  };
-
-  const openEditSiteModal = (site, view) => {
-    openModal("editSite", site, view);
-  };
-
-  const openAddLocationModal = () => {
-    openModal("addLocation");
-  };
-
-  const openEditLocationModal = (location, view) => {
-    openModal("editLocation", location, view);
-  };
-
   return (
     <>
-      <div className="flex flex-col md:flex-row gap-5">
-        <div className="w-full md:w-1/3 mb-4 md:mb-0">
+      <div className="flex flex-col md:flex-row gap-10">
+        <div className="w-full md:w-1/2 mb-4 md:mb-0">
           <div className="flex items-center justify-between">
             <h1 className="text-xl uppercase flex items-center gap-3">
               <span>Sites</span>
@@ -123,7 +107,7 @@ export default function SitesAndLocations() {
               color="primary"
               variant="flat"
               startContent={<FaMapLocation />}
-              onClick={() => openAddSiteModal()}
+              onClick={() => openModal("addSite")}
             >
               Add Site
             </Button>
@@ -131,7 +115,7 @@ export default function SitesAndLocations() {
           <Divider className="mt-3 mb-3" orientation="horizontal" />
           <SiteTable
             sites={sites}
-            onEditClick={openEditSiteModal}
+            onEditClick={openModal}
             onDeleteClick={handleDeleteSite}
           />
         </div>
@@ -147,7 +131,7 @@ export default function SitesAndLocations() {
               color="primary"
               variant="flat"
               startContent={<FaLocationDot />}
-              onClick={() => openAddLocationModal()}
+              onClick={() => openModal("addLocation")}
             >
               Add Location
             </Button>
@@ -155,7 +139,7 @@ export default function SitesAndLocations() {
           <Divider className="mt-3 mb-3" orientation="horizontal" />
           <LocationTable
             locations={locations}
-            onEditClick={openEditLocationModal}
+            onEditClick={openModal}
             onDeleteClick={handleDeleteLocation}
           />
         </div>
@@ -166,8 +150,6 @@ export default function SitesAndLocations() {
           onOpen={onOpen}
           onOpenChange={onOpenChange}
           title="Edit Site"
-          content="content tekst"
-          footer="footer"
           siteData={siteData}
           fetchDataLocations={fetchDataLocations}
           fetchDataSites={fetchDataSites}
@@ -192,8 +174,6 @@ export default function SitesAndLocations() {
           onOpen={onOpen}
           onOpenChange={onOpenChange}
           title="Add new location"
-          content="content tekst"
-          footer="footer"
           locationData={locationData}
           sitesData={sites}
           fetchDataLocations={fetchDataLocations}
