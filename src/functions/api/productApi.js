@@ -1,9 +1,9 @@
 import { API_BASE_URL } from "../../Config";
 
-// Get all the brands
-export const getBrands = async () => {
+// Get all the products
+export const getProducts = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/brand`);
+    const response = await fetch(`${API_BASE_URL}/product`);
     const result = await response.json();
 
     return result;
@@ -12,10 +12,10 @@ export const getBrands = async () => {
   }
 };
 
-// Delete a brand
-export const deleteBrand = async (brandId) => {
+// Delete a product
+export const deleteProduct = async (productId) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/brand/${brandId}`, {
+    const response = await fetch(`${API_BASE_URL}/product/${productId}`, {
       method: "DELETE",
     });
 
@@ -23,14 +23,14 @@ export const deleteBrand = async (brandId) => {
       return true;
     }
   } catch (error) {
-    throw new Error("Failed to delete the brand");
+    throw new Error("Failed to delete the product");
   }
 };
 
-// Create a brand
-export const createBrand = async (formData) => {
+// Create a product
+export const createProduct = async (formData) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/brand`, {
+    const response = await fetch(`${API_BASE_URL}/product`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -50,11 +50,10 @@ export const createBrand = async (formData) => {
   }
 };
 
-// Update a location
-export const updateBrand = async (formData) => {
-  console.log(formData);
+// Update a product
+export const updateProduct = async (formData) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/brand/${formData.id}`, {
+    const response = await fetch(`${API_BASE_URL}/product/${formData.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -70,6 +69,6 @@ export const updateBrand = async (formData) => {
       throw new Error(result.message);
     }
   } catch (error) {
-    throw new Error(`Error updating brand: ${error.message}`);
+    throw new Error(`Error updating product: ${error.message}`);
   }
 };

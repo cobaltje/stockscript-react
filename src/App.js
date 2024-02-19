@@ -12,7 +12,12 @@ export default function App() {
   return (
     <Router>
       <Navigation />
-      <ToastContainer />
+      <ToastContainer
+        pauseOnFocusLoss={false}
+        closeOnClick={true}
+        theme={"colored"}
+        autoClose={3000}
+      />
 
       <div className="max-w-5xl mx-auto">
         <Routes>
