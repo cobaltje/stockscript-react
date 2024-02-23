@@ -2,7 +2,10 @@ const db = require("../db");
 
 const getProducts = async (filters) => {
   let query = `
-  SELECT * FROM product WHERE 1 = 1 `;
+  SELECT product.*, brand.brandname, supplier.suppliername  FROM product 
+  LEFT JOIN brand on brand.id = product.brand_id
+  LEFT JOIN supplier on supplier.id = product.supplier_id
+  WHERE 1 = 1 `;
 
   Object.keys(filters).forEach((key, index) => {
     if (filters[key]) {

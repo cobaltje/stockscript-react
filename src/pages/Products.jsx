@@ -1,11 +1,15 @@
-import { Button, Chip, Divider, Tab, Tabs } from "@nextui-org/react";
+import { Button, Chip, Divider } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { FaFileCirclePlus } from "react-icons/fa6";
 import { deleteProduct, getProducts } from "../functions/api/productApi";
 import { toast } from "react-toastify";
 import { showDeleteConfirmation } from "../functions/swalConfig";
+import { useSidebar } from "../contexts/SidebarContext";
+import ProductTable from "../components/tables/ProductTable";
+import StockLocationCard from "../components/cards/StockLocationCard";
 
 export default function Products() {
+  const { setShowSidebar, setSidebarContent } = useSidebar();
   const [products, setProducts] = useState([]);
 
   const fetchDataProducts = async () => {
@@ -52,7 +56,10 @@ export default function Products() {
             color="primary"
             variant="flat"
             startContent={<FaFileCirclePlus />}
-            onClick=""
+            onClick={() => {
+              setShowSidebar(true);
+              setSidebarContent(<StockLocationCard />);
+            }}
           >
             Add Product
           </Button>
@@ -60,18 +67,7 @@ export default function Products() {
       </div>
 
       <Divider className="mt-3 mb-3" orientation="horizontal" />
-      <div>
-        test
-        {products.length > 0 ? (
-          products.map((product) => (
-            <div key={product.id}>
-              <p>{product.productname}</p>
-            </div>
-          ))
-        ) : (
-          <p>No products found.</p>
-        )}
-      </div>
+      <ProductTable products={products} />
     </>
   );
 }

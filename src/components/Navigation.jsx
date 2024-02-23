@@ -15,7 +15,7 @@ import {
 } from "@nextui-org/react";
 import { FaBell } from "react-icons/fa6";
 
-export default function Navigation() {
+export default function SidebarNavigation() {
   const location = useLocation();
   const isRouteActive = (route) => location.pathname === route;
 

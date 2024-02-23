@@ -1,12 +1,4 @@
-import {
-  Button,
-  Divider,
-  Chip,
-  Input,
-  PopoverTrigger,
-  Popover,
-  PopoverContent,
-} from "@nextui-org/react";
+import { Button, Divider, Chip, Input } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { FaMagnifyingGlass, FaNapster } from "react-icons/fa6";
 import { API_BASE_URL } from "../Config";
@@ -17,10 +9,11 @@ import {
   updateBrand,
 } from "../functions/api/brandApi";
 import { toast } from "react-toastify";
+import PopoverBrand from "../components/PopoverBrands";
 
 export default function Brands() {
   const [isSaving, setIsSaving] = useState(false);
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
   const [brands, setBrands] = useState([]);
   const [formData, setFormData] = useState({
     brandname: "",
@@ -97,7 +90,7 @@ export default function Brands() {
         toast.error(`${error}`, {});
       } finally {
         setIsSaving(false);
-        setIsPopoverOpen(false);
+        //setIsPopoverOpen(false);
         setSelectedBrand({
           id: null,
           brandname: "",
@@ -166,57 +159,14 @@ export default function Brands() {
       <Divider className="mt-3 mb-3" orientation="horizontal" />
       <div className="flex flex-wrap mt-2 gap-2">
         {filterBrands(brands, searchInput).map((brand) => (
-          <Popover
+          <PopoverBrand
             key={brand.id}
-            placement="bottom"
-            backdrop="opaque"
-            offset={10}
-            isOpen={isPopoverOpen}
-            //onOpenChange={() => setIsPopoverOpen(true)}
-            // onClose={() => setIsPopoverOpen(false)}
-            showArrow
-          >
-            <PopoverTrigger>
-              <Chip
-                onClose={() => handleDeleteBrand(brand.id, brand.brandname)}
-                variant="shadow"
-                color="primary"
-              >
-                <span
-                  onClick={() => {
-                    setSelectedBrand({
-                      id: brand.id,
-                      brandname: brand.brandname,
-                    });
-                    setIsPopoverOpen(true);
-                  }}
-                >
-                  {brand.brandname}
-                </span>
-              </Chip>
-            </PopoverTrigger>
-            <PopoverContent>
-              <div className="flex items-center gap-2">
-                <Input
-                  size="sm"
-                  value={selectedBrand.brandname}
-                  onChange={(e) =>
-                    setSelectedBrand({
-                      ...selectedBrand,
-                      brandname: e.target.value,
-                    })
-                  }
-                />
-                <Button
-                  size="sm"
-                  color="primary"
-                  onClick={() => handleUpdate()}
-                >
-                  Save
-                </Button>
-              </div>
-            </PopoverContent>
-          </Popover>
+            brand={brand}
+            selectedBrand={selectedBrand}
+            setSelectedBrand={setSelectedBrand}
+            handleDeleteBrand={handleDeleteBrand}
+            handleUpdate={handleUpdate}
+          />
         ))}
       </div>
     </>
