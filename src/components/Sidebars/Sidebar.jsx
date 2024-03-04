@@ -9,7 +9,7 @@ export default function Sidebar() {
   }
 
   return (
-    <div className="bg-indigo-100  w-5/12 p-5">
+    <div className="bg-indigo-100   p-5">
       {/* Header */}
       <div className="text-xl uppercase mb-4 "></div>
       {/* Content */}

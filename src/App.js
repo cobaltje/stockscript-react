@@ -36,7 +36,9 @@ export default function App() {
               </div>
             </div>
           </div>
-          <Sidebar />
+          <div className="flex h-screen">
+            <Sidebar />
+          </div>
         </div>
       </SidebarProvider>
     </Router>

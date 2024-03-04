@@ -3,8 +3,8 @@ import {
   Card,
   CardBody,
   CardFooter,
+  CardHeader,
   Chip,
-  Divider,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -22,7 +22,7 @@ import {
 export default function StockLocationCard() {
   return (
     <Card className="mb-2 shadow-md">
-      <CardBody>
+      <CardHeader>
         <div className="flex flex-row gap-2">
           <Chip startContent={<FaLocationDot />} color="primary" variant="flat">
             First Floor
@@ -31,12 +31,20 @@ export default function StockLocationCard() {
             Main building
           </Chip>
         </div>
-        <div className="flex mt-5 h-5 items-center space-x-4 text-xl justify-center">
-          <span>8</span>
-          <Divider orientation="vertical" />
-          <span>4</span>
-          <Divider orientation="vertical" />
-          <span>2</span>
+      </CardHeader>
+      <CardBody>
+        <div className="flex mt-5  items-center space-x-4 text-3xl gap-20">
+          <div className="flex flex-col gap-1">
+            <Chip color="success" variant="flat">
+              Minimum Stock: 3
+            </Chip>
+            <Chip color="warning" variant="flat">
+              Maximum Stock: 7
+            </Chip>
+          </div>
+          <div>
+            <span className="text-center">8</span>
+          </div>
         </div>
       </CardBody>
       <CardFooter className="flex justify-end">

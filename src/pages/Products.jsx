@@ -40,7 +40,6 @@ export default function Products() {
       }
     }
   };
-  console.log(products.length);
 
   return (
     <>

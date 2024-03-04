@@ -7,10 +7,22 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
+import { useState } from "react";
+import StockLocationCard from "../cards/StockLocationCard";
+import { useSidebar } from "../../contexts/SidebarContext";
 
 export default function ProductTable({ products, onEditClick, onDeleteClick }) {
+  const { setShowSidebar, setSidebarContent } = useSidebar();
+  const [selectedId, setSelectedId] = useState(new Set(["0"]));
+
   return (
-    <Table isStriped aria-label="product table">
+    <Table
+      aria-label="product table"
+      selectionMode="single"
+      color="primary"
+      selectedKeys={selectedId}
+      onSelectionChange={setSelectedId}
+    >
       <TableHeader>
         <TableColumn>#</TableColumn>
         <TableColumn>Product</TableColumn>

@@ -10,6 +10,7 @@ const siteRoutes = require("./routes/siteRoute");
 const supplierRoutes = require("./routes/supplierRoute");
 const brandRoutes = require("./routes/brandRoute");
 const productRoutes = require("./routes/productRoute");
+const stockLocationRoutes = require("./routes/stockLocationRoute");
 
 app.use(cors());
 app.use(express.json());
@@ -18,11 +19,12 @@ app.use("/site", siteRoutes);
 app.use("/supplier", supplierRoutes);
 app.use("/brand", brandRoutes);
 app.use("/product", productRoutes);
+app.use("/stocklocation", stockLocationRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello, this is your server!");
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`StockScript Server is running on http://localhost:${PORT}`);
 });

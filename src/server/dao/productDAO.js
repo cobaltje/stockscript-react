@@ -37,7 +37,7 @@ const updateProduct = async (
 const createProduct = async (productname, brand_id, supplier_id, image_url) => {
   const query = `
     INSERT INTO product (productname, brand_id, supplier_id, image_url)
-    VALUES ($1, $2)
+    VALUES ($1, $2, $3, $4)
     RETURNING *`;
 
   return db.one(query, [productname, brand_id, supplier_id, image_url]);
